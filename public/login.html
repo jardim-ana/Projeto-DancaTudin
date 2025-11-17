@@ -14,14 +14,14 @@
  
 </head>
 
-<body onload="listar()">
+<body>
  <header>
         <div class="header">
             <div class="logo">
                 <img src="../assets/Logo.png" alt="Logo">
             </div>
             <div class="botoes">
-                <a href="./home.html" class="home">Home</a>
+                <a href="./index.html" class="home">Home</a>
                 <a href="./sobrenos.html" class="sobrenos">Sobre nós</a>
                 <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
                 <a href="./login.html" class="login">Login</a>
@@ -51,7 +51,7 @@
             <input id="senha_input" type="password" placeholder="******" />
         </div>
     </div>
-        <button class="botao" onclick="cadastrar()">Cadastrar</button>
+        <button class="botao" onclick="entrar()">Entrar</button>
       </div>
     </div>
 </div>
@@ -88,7 +88,7 @@
 
 
     function entrar() {
-        aguardar();
+
 
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
@@ -96,7 +96,6 @@
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
             return false;
         }
         else {
@@ -129,7 +128,7 @@
                     sessionStorage.ID_USUARIO = json.idalunos;
 
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
+                        window.location = "./index.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
@@ -140,7 +139,6 @@
 
                 resposta.text().then(texto => {
                     console.error(texto);
-                    finalizarAguardar(texto);
                 });
             }
 
