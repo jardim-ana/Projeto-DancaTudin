@@ -6,16 +6,12 @@
 comandos para mysql server
 */
 
-REATE DATABASE dancaTudin;
 
+
+
+CREATE DATABASE dancaTudin;
 
 USE dancaTudin;
-
-CREATE TABLE estilo (
-    idestilo INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(45) NOT NULL,
-    nivel VARCHAR(45) NOT NULL
-);
 
 CREATE TABLE endereco (
     idendereco INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,7 +20,6 @@ CREATE TABLE endereco (
     bairro VARCHAR(45),
     cep VARCHAR(45)
 );
-
 
 CREATE TABLE escola (
     idescola INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,25 +30,17 @@ CREATE TABLE escola (
     CONSTRAINT fk_escola_endereco
         FOREIGN KEY (endereco_idendereco) 
         REFERENCES endereco(idendereco)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
-
 
 CREATE TABLE alunos (
     idalunos INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
     email VARCHAR(45) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
-    idestilo INT,  
+    estilo VARCHAR(45) NOT NULL,
+    nivel VARCHAR(45) NOT NULL
     
-    CONSTRAINT fk_aluno_estilo
-        FOREIGN KEY (idestilo)
-        REFERENCES estilo(idestilo)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE
 );
-
 
 CREATE TABLE aula (
     idaula INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,17 +50,12 @@ CREATE TABLE aula (
 
     CONSTRAINT fk_aula_estilo
         FOREIGN KEY (idestilo)
-        REFERENCES estilo(idestilo)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE,
+        REFERENCES estilo(idestilo),
 
     CONSTRAINT fk_aula_escola
         FOREIGN KEY (idescola)
         REFERENCES escola(idescola)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
-
 
 CREATE TABLE avaliacao (
     idavaliacao INT AUTO_INCREMENT PRIMARY KEY,
@@ -84,17 +66,12 @@ CREATE TABLE avaliacao (
 
     CONSTRAINT fk_avaliacao_escola
         FOREIGN KEY (idescola)
-        REFERENCES escola(idescola)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+        REFERENCES escola(idescola),
 
     CONSTRAINT fk_avaliacao_aluno
         FOREIGN KEY (idalunos)
         REFERENCES alunos(idalunos)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
-
 
 CREATE TABLE alunos_has_escola (
     idalunos INT NOT NULL,
@@ -104,13 +81,11 @@ CREATE TABLE alunos_has_escola (
 
     CONSTRAINT fk_rel_aluno
         FOREIGN KEY (idalunos)
-        REFERENCES alunos(idalunos)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+        REFERENCES alunos(idalunos),
 
     CONSTRAINT fk_rel_escola
         FOREIGN KEY (idescola)
         REFERENCES escola(idescola)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
+
+SELECT * FROM alunos;
