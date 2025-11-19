@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exemplo - Quiz</title>
-    <link rel="stylesheet" href="public/css/quizz.css">
+     <link rel="stylesheet" href="./quizz.css">
 </head>
 
 
@@ -79,7 +79,6 @@
 
             <div id="botoes" class="flex-colunar padding-8">
                 <button onclick="submeter()" id="btnSubmeter">Submeter resposta</button>
-                <button onclick="avancar()" id="btnProx" disabled>Avançar para próxima questão</button>
                 <!-- <button onclick="finalizar()" id="btnConcluir" disabled>Finalizar Quiz</button> -->
                 <button onclick="tentarNovamente()" id="btnTentarNovamente" disabled>Tentar novamente</button>
             </div>
@@ -105,7 +104,7 @@
             pergunta: "Onde a dama posiciona a mão no cavaleiro durante a dança?",
             alternativaA: "No antebraço",
             alternativaB: "No cotovelo",
-            alternativaC: "Na escápula (parte superior das costas)",
+            alternativaC: "Na escápula",
             alternativaD: "No pescoço",
             alternativaCorreta: "alternativaC"
         },
@@ -122,7 +121,7 @@
         {
             pergunta: "O que significa 'conduzir' na dança?",
             alternativaA: "Puxar ou empurrar o par com força",
-            alternativaB: "Dar sinais claros e suaves para indicar movimentos",
+            alternativaB: "Dar sinais para indicar movimentos",
             alternativaC: "Fazer o passo sozinho e esperar o outro copiar",
             alternativaD: "Mudar o ritmo sem avisar",
             alternativaCorreta: "alternativaB"
@@ -156,11 +155,11 @@
         },
 
         {
-            pergunta: "Como deve ser a pegada (hold) do casal durante a dança?",
+            pergunta: "Como deve ser a pegada do casal durante a dança?",
             alternativaA: "Apertada para não perder o controle",
             alternativaB: "Solta demais, sem contato",
             alternativaC: "Confortável, firme e ao mesmo tempo suave",
-            alternativaD: "Rígida para manter postura fixa",
+            alternativaD: "Rígida",
             alternativaCorreta: "alternativaC"
         },
 
@@ -168,7 +167,7 @@
             pergunta: "Quando o cavaleiro quer iniciar um giro na dama, como ele sinaliza?",
             alternativaA: "Puxando o braço dela rapidamente",
             alternativaB: "Empurrando a dama para o lado",
-            alternativaC: "Elevando levemente a mão e dando intenção suave",
+            alternativaC: "Elevando levemente a mão",
             alternativaD: "Falando verbalmente o movimento",
             alternativaCorreta: "alternativaC"
         },
@@ -177,7 +176,7 @@
             pergunta: "Em uma boa conexão de dança, o que é fundamental?",
             alternativaA: "Força física para liderar",
             alternativaB: "Rigidez nos braços",
-            alternativaC: "Leveza e sensibilidade nos movimentos",
+            alternativaC: "Leveza nos movimentos",
             alternativaD: "Velocidade máxima",
             alternativaCorreta: "alternativaC"
         },
@@ -185,9 +184,9 @@
         {
             pergunta: "Qual é o papel da dama na condução?",
             alternativaA: "Antecipar os passos sem esperar o líder",
-            alternativaB: "Reagir à intenção do cavaleiro com leveza",
+            alternativaB: "Reagir à intenção do cavaleiro",
             alternativaC: "Fazer força para decidir o movimento",
-            alternativaD: "Escolher os passos sozinha",
+            alternativaD: "Escolher os passos",
             alternativaCorreta: "alternativaB"
         }
 
@@ -240,27 +239,48 @@
     }
 
     function submeter() {
-        const options = document.getElementsByName("option"); // recupera alternativas no html
+    const options = document.getElementsByName("option");
 
-        let hasChecked = false
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].checked) {
-                hasChecked = true
-                break
-            }
-        }
-
-        if (!hasChecked) {
-            alert("Não há alternativas escolhidas. Escolha uma opção.")
-        } else {
-            btnSubmeter.disabled = true
-            btnProx.disabled = false
-
-            habilitarAlternativas(false)
-
-            checarResposta()
+  
+    let selecionada = null;
+    for (let option of options) {
+        if (option.checked) {
+            selecionada = option.value; 
+            break;
         }
     }
+
+    if (!selecionada) {
+        alert("Não há alternativas escolhidas. Escolha uma opção.");
+        return; 
+    }
+
+
+    const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual];
+
+
+    if (selecionada === questaoAtual.alternativaCorreta) {
+        pontuacaoFinal++;
+        certas++;
+        document.getElementById("spanCertas").innerHTML = certas;
+    } else {
+        erradas++;
+        document.getElementById("spanErradas").innerHTML = erradas;
+    }
+
+  
+    numeroDaQuestaoAtual++;
+
+    if (numeroDaQuestaoAtual < quantidadeDeQuestoes) {
+        desmarcarRadioButtons();
+        preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual);
+    } else {
+        finalizarJogo();
+    }
+}
+
+        
+    
 
     function habilitarAlternativas(trueOrFalse) {
         let opcaoEscolhida = trueOrFalse ? false : true
@@ -272,70 +292,6 @@
 
     }
 
-    function avancar() {
-        btnProx.disabled = true
-        btnSubmeter.disabled = false
-
-        desmarcarRadioButtons()
-        limparCoresBackgroundOpcoes()
-
-
-        numeroDaQuestaoAtual++
-
-        if (numeroDaQuestaoAtual < quantidadeDeQuestoes) {
-            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
-        } else {
-            finalizarJogo()
-        }
-    }
-
-    function tentarNovamente() {
-        // atualiza a página
-        window.location.reload()
-    }
-
-    let estiloEscolhido = null;
-
-
-    function checarResposta() {
-        const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual];
-        const options = document.getElementsByName("option");
-
-        options.forEach(option => {
-            if (option.checked && numeroDaQuestaoAtual === 0) {
-                // Guardar o estilo da primeira pergunta
-                estiloEscolhido = option.value === "alternativaA" ? "Sertanejo" : "Forró";
-            }
-        });
-
-        // verifica se resposta assinalada é correta
-        options.forEach((option) => {
-            if (option.checked === true && option.value === respostaQuestaoAtual) {
-                document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
-                pontuacaoFinal++
-                certas++
-                document.getElementById("spanCertas").innerHTML = certas
-                numeroDaQuestaoAtual++
-            } else if (option.checked && option.value !== respostaQuestaoAtual) {
-                const wrongLabelId = option.labels[0].id
-
-                document.getElementById(wrongLabelId).classList.add("text-danger-with-bg")
-                document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
-                tentativaIncorreta++
-                erradas++
-                document.getElementById("spanErradas").innerHTML = erradas
-                numeroDaQuestaoAtual++
-            }
-        })
-    }
-
-    function limparCoresBackgroundOpcoes() {
-        const options = document.getElementsByName("option");
-        options.forEach((option) => {
-            document.getElementById(option.labels[0].id).classList.remove("text-danger-with-bg")
-            document.getElementById(option.labels[0].id).classList.remove("text-success-with-bg")
-        })
-    }
 
     function desmarcarRadioButtons() {
         const options = document.getElementsByName("option");
@@ -348,35 +304,22 @@ function finalizarJogo() {
     const porcentagemAcertos = pontuacaoFinal / quantidadeDeQuestoes;
     let nivel = "";
 
-    if(porcentagemAcertos < 0.4){
+    if(porcentagemAcertos < 0.4) {
         nivel = "Básico";
-    } else if(porcentagemAcertos < 0.7){
+    } else if(porcentagemAcertos < 0.7) {
         nivel = "Intermediário";
     } else {
         nivel = "Avançado";
     }
 
+    // Atualizando a pontuação no final
+    document.getElementById("spanPontuacaoFinal").innerHTML = pontuacaoFinal;
+    document.getElementById("msgFinal").innerHTML = `Seu nível: ${nivel}`;
+
     console.log("Estilo:", estiloEscolhido, "Nível:", nivel);
-
-    enviarPreferencias(estiloEscolhido, nivel);
 }
 
-function enviarPreferencias(estilo, nivel) {
-    fetch('/quiz/salvar', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ estilo, nivel }),
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log('Resposta do servidor:', data);
-    })
-    .catch(err => {
-        console.error('Erro ao enviar dados para o servidor:', err);
-    });
-}
+
 
     
 </script>
