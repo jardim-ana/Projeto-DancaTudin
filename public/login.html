@@ -11,6 +11,7 @@
   <script src="./js/sessao.js"></script>
 
   <link rel="stylesheet" href="../css/cadastro.css" />
+  <link rel="stylesheet" href="../public/dashboard.html" />
  
 </head>
 
@@ -125,12 +126,12 @@
                     console.log(JSON.stringify(json));
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.ID_USUARIO = json.idalunos;
+                    sessionStorage.ID_USUARIO = json.id;
 
                     console.log("LOGIN OK — REDIRECIONANDO PARA DASHBOARD...");
 
                     setTimeout(function () {
-                        window.location.href = "./dashboard.html";
+                        window.location = "dashboard.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
