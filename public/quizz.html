@@ -192,14 +192,12 @@
 
     ]
 
-    // variáveis globais    
     let numeroDaQuestaoAtual = 0
     let pontuacaoFinal = 0
     let tentativaIncorreta = 0
     let certas = 0
     let erradas = 0
     let quantidadeDeQuestoes = listaDeQuestoes.length
-    // let isUltima = numeroDaQuestaoAtual == quantidadeDeQuestoes-1 ? true : false
 
     function onloadEsconder() {
         document.getElementById('pontuacao').style.display = "none"
@@ -217,7 +215,7 @@
 
         btnSubmeter.disabled = false
         btnProx.disabled = true
-        // btnConcluir.disabled = true
+    
         btnTentarNovamente.disabled = true
     }
 
@@ -312,7 +310,7 @@ function finalizarJogo() {
         nivel = "Avançado";
     }
 
-    // Atualizando a pontuação no final
+
     document.getElementById("spanPontuacaoFinal").innerHTML = pontuacaoFinal;
     document.getElementById("msgFinal").innerHTML = `Seu nível: ${nivel}`;
 

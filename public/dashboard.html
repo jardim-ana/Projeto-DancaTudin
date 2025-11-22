@@ -9,42 +9,43 @@
 <body>
 
 <div class="menu">
-    <h2>DançaTudin</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">Perfil</a>
-    <a href="#">Locais</a>
-    <a href="#">Sair</a>
+    <h1>DançaTudin</h1>
+    <a href="./login.html">Sair</a>
 </div>
 
 <div class="principal">
 
     <div class="aulas">
-        <h3>Locais que oferecem o seu nível</h3>
+        <h2>Locais que oferecem aulas o seu nível.</h2>
         <div id="listaAulas"></div>
     </div>
 
     <div class="indicadores">
         <div class="kpi">
-            <h3>Pessoas no mesmo nível</h3>
-            <p id="kpiNivel">...</p>
+            <h2>Quantidade de pessoas no seu nível</h2>
+            <p id="kpiNivel"></p>
+            <a id="kpiLegendaPessoas">Quantidade de pessoas cadastradas que estão no mesmo nível que você.</a>
+        
         </div>
         <div class="kpi">
-            <h3>Nível atual</h3>
-            <p id="kpiNivelAtual">...</p>
+            <h2>Seu nível</h2>
+            <p id="kpiNivelAtual"></p>
+            <a id="kpiLegendaPessoas">Seu nível atual de acordo com o quiz.</a>
         </div>
         <div class="kpi">
-            <h3>Semanas para subir</h3>
-            <p id="kpiSemanas">...</p>
+            <h2>Semanas para subir de nível</h2>
+            <p id="kpiSemanas"></p>
+            <a id="kpiLegenda"></a>
         </div>
     </div>
 
     <div class="graficos">
-        <div class="grafico">
-            <h3>Distribuição por endereço</h3>
+        <div class="grafico1">
+            <h3>Porcentagem de locais no seu nível por região</h3>
             <canvas id="graficoPizza"></canvas>
         </div>
-        <div class="grafico">
-            <h3>Distribuição de alunos por nível</h3>
+        <div class="grafico2">
+            <h3>Quantidade de pessoas por nível</h3>
             <canvas id="graficoBarras"></canvas>
         </div>
     </div>
@@ -67,13 +68,34 @@ function carregarKPIs() {
         .then(dados => {
             if (dados.length > 0) {
                 const kpi = dados[0];
-                document.getElementById("kpiNivel").textContent = kpi.pessoasMesmoNivel + " pessoas";
-                document.getElementById("kpiNivelAtual").textContent = kpi.nivelAtual;
-                document.getElementById("kpiSemanas").textContent = kpi.semanasRestantes + " semanas";
+                
+                document.getElementById("kpiNivel").innerHTML = `${kpi.pessoasMesmoNivel} pessoas`;
+                document.getElementById("kpiNivelAtual").innerHTML = kpi.nivelAtual;
+
+                let semanasParaSubir;
+                let legenda = '';
+
+                if (kpi.nivelAtual =="Básico") {
+                    semanasParaSubir = 48;
+                    legenda = "1 ano para passar para o nível Intermediário";
+                } else if (kpi.nivelAtual == "Intermediário") {
+                    semanasParaSubir = 96;
+                    legenda = "2 anos para passar para o nível Avançado";
+                } else if (kpi.nivelAtual == "Avançado") {
+                    semanasParaSubir = 144;
+                    legenda = "3 anos para passar a ser Bolsista (auxiliar do professor)";
+                } else {
+                    semanasParaSubir = "-";
+                    legenda = "Sem informações sobre o tempo de evolução para o próximo nível.";
+                }
+
+                document.getElementById("kpiSemanas").innerHTML = `${semanasParaSubir} semanas`;
+                document.getElementById("kpiLegenda").innerHTML = legenda;
             } else {
-                document.getElementById("kpiNivel").textContent = "0 pessoas";
-                document.getElementById("kpiNivelAtual").textContent = "-";
-                document.getElementById("kpiSemanas").textContent = "-";
+                document.getElementById("kpiNivel").innerHTML = "0 pessoas";
+                document.getElementById("kpiNivelAtual").innerHTML = "-";
+                document.getElementById("kpiSemanas").innerHTML = "-";
+                document.getElementById("kpiLegenda").innerHTML = "-";
             }
         })
         .catch(e => console.error("Erro ao carregar KPIs:", e));
@@ -84,14 +106,36 @@ function carregarPizza() {
         .then(res => res.json())
         .then(dados => {
             if (dados.length === 0) return;
-            const labels = dados.map(z => z.zona);
-            const valores = dados.map(z => z.percentual);
-            if (pizza) pizza.destroy();
-            pizza = new Chart(document.getElementById('graficoPizza'), {
-                type: 'pie',
-                data: { labels: labels, datasets: [{ data: valores, backgroundColor: ['#d92bbc', '#200559', '#79a2f2', '#63caf2', '#f2ad94'] }] },
-                options: { plugins: { legend: { position: 'bottom' } } }
-            });
+
+            const zonas = [];
+            const valores = [];
+
+            for (let i = 0; i < dados.length; i++) {
+                zonas.push(dados[i].zona);
+                valores.push(dados[i].percentual);
+            }
+
+            if (pizza) {
+                pizza.data.labels = zonas;
+                pizza.data.datasets[0].data = valores;
+                pizza.update();
+            } else {
+                pizza = new Chart(document.getElementById('graficoPizza'), {
+                    type: 'pie',
+                    data: {
+                        labels: zonas,
+                        datasets: [{
+                            data: valores,
+                            backgroundColor: ['#d92bbc', '#200559', '#79a2f2', '#63caf2', '#f2ad94']
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
         })
         .catch(e => console.error("Erro ao carregar gráfico de pizza:", e));
 }
@@ -101,14 +145,44 @@ function carregarBarras() {
         .then(r => r.json())
         .then(dados => {
             if (dados.length === 0) return;
-            const labels = dados.map(n => n.nivel);
-            const valores = dados.map(n => n.quantidade);
-            if (barras) barras.destroy();
-            barras = new Chart(document.getElementById('graficoBarras'), {
-                type: 'bar',
-                data: { labels: labels, datasets: [{ data: valores, backgroundColor: ['#63caf2', '#79a2f2', '#200559', '#63caf2', '#f2ad94'] }] },
-                options: { scales: { y: { min: 0, max: 10, stepSize: 1, beginAtZero: true  } }, plugins: { legend: { display: false } } }
-            });
+
+            const niveis = [];
+            const quantidades = [];
+
+            for (let i = 0; i < dados.length; i++) {
+                niveis.push(dados[i].nivel);
+                quantidades.push(dados[i].quantidade);
+            }
+
+            if (barras) {
+                barras.data.labels = niveis;
+                barras.data.datasets[0].data = quantidades;
+                barras.update();
+            } else {
+                barras = new Chart(document.getElementById('graficoBarras'), {
+                    type: 'bar',
+                    data: {
+                        labels: niveis,
+                        datasets: [{
+                            data: quantidades,
+                            backgroundColor: ['#63caf2', '#79a2f2', '#200559', '#63caf2', '#f2ad94']
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                min: 0,
+                                max: 30,
+                                stepSize: 1,
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
         })
         .catch(e => console.error("Erro ao carregar gráfico de barras:", e));
 }
@@ -118,20 +192,21 @@ function carregarAulas() {
         .then(res => res.json())
         .then(aulas => {
             const lista = document.getElementById('listaAulas');
-            lista.innerHTML = '';
+            lista.innerHTML = '';  
             if (aulas.length === 0) {
-                lista.textContent = "Nenhuma aula encontrada para o seu nível.";
+                lista.innerHTML = "Nenhuma aula encontrada para o seu nível.";
                 return;
             }
-            aulas.forEach(aula => {
-                const item = document.createElement('p');
-                item.textContent = `${aula.diaSemana} ${aula.horario} - ${aula.estilo} na escola ${aula.escola} (${aula.rua}, ${aula.numero}, ${aula.bairro}, ${aula.cep})`;
-                lista.appendChild(item);
-            });
+
+            for (let i = 0; i < aulas.length; i++) {
+                lista.innerHTML += `
+                    <p>${aulas[i].diaSemana} ${aulas[i].horario} - ${aulas[i].estilo} na escola ${aulas[i].escola} (${aulas[i].rua}, ${aulas[i].numero}, ${aulas[i].bairro}, ${aulas[i].cep})</p>
+                `;
+            }
         })
         .catch(e => {
             console.error("Erro ao carregar aulas:", e);
-            document.getElementById('listaAulas').textContent = "Erro ao carregar aulas.";
+            document.getElementById('listaAulas').innerHTML = "Erro ao carregar aulas.";
         });
 }
 
