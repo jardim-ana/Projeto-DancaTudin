@@ -20,6 +20,11 @@ router.get("/distribuicao-zonas/:idAluno", function (req, res) {
 
 router.get("/distribuicao-niveis", function (req, res) {
     medidaController.distribuicaoNiveis(req, res);
+
+});
+
+router.get("/aulas-por-nivel/:idAluno", function(req, res) {
+    medidaController.listarAulasPorNivel(req, res);
 });
 
 module.exports = router;

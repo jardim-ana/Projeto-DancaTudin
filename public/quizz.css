@@ -1,28 +1,109 @@
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
 
-}
 
-.header {
-  background-color: #fff;
+.pontuacaoEJogo {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  font-size: 160%;
+  justify-content: center;
+  flex-direction: column;
+    width: 800px;
+    margin: 32px auto;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.header .logo img {
-  height: 120px;
+.btnIniciarQuiz {
+    background-color: #200559;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 16px;
 }
 
-.botoes a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  margin-left: 20px;
+.btnIniciarQuiz:hover {
+    background-color: #d92bbc;
 }
+
+.pontuacao {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #afaeae;
+}
+
+.pontuacao span {
+    font-weight: bold;
+}
+
+.jogo {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #afaeae;
+}
+
+.infoQuestao, .perguntaDaQuestaoAtual, .infoAlternativas, .opcoes, .botoes {
+    margin-bottom: 12px;
+}
+
+.text-bold {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.opcoes span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.option {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    cursor: pointer;
+}
+
+.botoes button {
+    background-color: #200559;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botoes button:hover {
+    background-color: #d92bbc;
+}
+
+.botoes button:disabled {
+    background-color: #afaeae;
+    cursor: not-allowed;
+}
+
+.flex-colunar {
+    display: flex;
+    flex-direction: column;
+}
+
+.padding-8 {
+    padding: 8px;
+}
+
+.width-fit-content {
+    width: fit-content;
+}
+
+
 
 

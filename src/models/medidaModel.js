@@ -46,21 +46,24 @@ function distribuicaoZonas(idAluno) {
     var sql = `
         SELECT 
             en.bairro AS zona,
-            ROUND(COUNT(*) * 100 / (
-                SELECT COUNT(*) 
-                FROM alunos_has_escola 
-                WHERE idalunos = ${idAluno}
+            ROUND(COUNT(e.idescola) * 100 / (
+                SELECT COUNT(e2.idescola)
+                FROM escola e2
+                JOIN aula a2 ON a2.idescola = e2.idescola
+                WHERE a2.nivel = (
+                    SELECT nivel FROM alunos WHERE idalunos = ${idAluno}
+                )
             ), 2) AS percentual
-        FROM alunos_has_escola rel
-        JOIN escola e ON e.idescola = rel.idescola
+        FROM escola e
+        JOIN aula a ON a.idescola = e.idescola
         JOIN endereco en ON en.idendereco = e.endereco_idendereco
-        WHERE rel.idalunos = ${idAluno}
+        WHERE a.nivel = (
+            SELECT nivel FROM alunos WHERE idalunos = ${idAluno}
+        )
         GROUP BY en.bairro;
     `;
     return database.executar(sql);
 }
-
-
 
 function distribuicaoNiveis() {
     var sql = `
@@ -73,10 +76,33 @@ function distribuicaoNiveis() {
     return database.executar(sql);
 }
 
+function listarAulasPorNivel(idAluno) {
+    var sql = `
+        SELECT 
+            a.idaula,
+            a.estilo,
+            a.nivel,
+            a.diaSemana,
+            a.horario,
+            e.nome AS escola,
+            en.rua,
+            en.numero,
+            en.bairro,
+            en.cep
+        FROM aula a
+        JOIN escola e ON a.idescola = e.idescola
+        JOIN endereco en ON en.idendereco = e.endereco_idendereco
+        WHERE a.nivel = (SELECT nivel FROM alunos WHERE idalunos = ${idAluno});
+    `;
+    return database.executar(sql);
+}
+
 module.exports = {
     listarAulasPorAluno,
     listarAulasPorEscola,
+    listarAulasPorNivel,
     buscarKPIs,
     distribuicaoZonas,
     distribuicaoNiveis
 };
+

@@ -1,0 +1,110 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #ffffff;
+}
+
+.menu {
+    width: 220px;
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px;
+}
+
+.menu h2 {
+    margin-bottom: 40px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.menu a {
+    display: block;
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    margin: 15px 0;
+    transition: color 0.3s, background-color 0.3s;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.menu a:hover {
+    background-color: #63caf2;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.content {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.aulas-container {
+    background-color: #79a2f2;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.aulas-container h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+#aulasLista p {
+    padding: 10px;
+    border-bottom: 1px solid #c4c4c4;
+    font-size: 16px;
+}
+
+.kpi-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.kpi {
+    flex: 1;
+    background-color: #79a2f2;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.kpi h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #000000;
+}
+
+.kpi p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #200559;
+}
+
+.charts {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-box {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chart-box h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #000000;
+}

@@ -16,35 +16,39 @@
     <a href="#">Sair</a>
 </div>
 
-<div class="content">
-    <div class="kpi-container">
+<div class="principal">
+
+    <div class="aulas">
+        <h3>Locais que oferecem o seu nível</h3>
+        <div id="listaAulas"></div>
+    </div>
+
+    <div class="indicadores">
         <div class="kpi">
             <h3>Pessoas no mesmo nível</h3>
             <p id="kpiNivel">...</p>
         </div>
-
         <div class="kpi">
             <h3>Nível atual</h3>
             <p id="kpiNivelAtual">...</p>
         </div>
-
         <div class="kpi">
             <h3>Semanas para subir</h3>
             <p id="kpiSemanas">...</p>
         </div>
     </div>
 
-    <div class="charts">
-        <div class="chart-box">
-            <h3>Locais que oferecem o nível/estilo</h3>
+    <div class="graficos">
+        <div class="grafico">
+            <h3>Distribuição por endereço</h3>
             <canvas id="graficoPizza"></canvas>
         </div>
-
-        <div class="chart-box">
+        <div class="grafico">
             <h3>Distribuição de alunos por nível</h3>
             <canvas id="graficoBarras"></canvas>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -80,24 +84,13 @@ function carregarPizza() {
         .then(res => res.json())
         .then(dados => {
             if (dados.length === 0) return;
-
             const labels = dados.map(z => z.zona);
             const valores = dados.map(z => z.percentual);
-
             if (pizza) pizza.destroy();
-
             pizza = new Chart(document.getElementById('graficoPizza'), {
                 type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: valores,
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8AFF33', '#FF33F6']
-                    }]
-                },
-                options: {
-                    plugins: { legend: { position: 'bottom' } }
-                }
+                data: { labels: labels, datasets: [{ data: valores, backgroundColor: ['#d92bbc', '#200559', '#79a2f2', '#63caf2', '#f2ad94'] }] },
+                options: { plugins: { legend: { position: 'bottom' } } }
             });
         })
         .catch(e => console.error("Erro ao carregar gráfico de pizza:", e));
@@ -108,32 +101,45 @@ function carregarBarras() {
         .then(r => r.json())
         .then(dados => {
             if (dados.length === 0) return;
-
             const labels = dados.map(n => n.nivel);
             const valores = dados.map(n => n.quantidade);
-
             if (barras) barras.destroy();
-
             barras = new Chart(document.getElementById('graficoBarras'), {
                 type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: valores,
-                        backgroundColor: '#36A2EB'
-                    }]
-                },
-                options: { plugins: { legend: { display: false } } }
+                data: { labels: labels, datasets: [{ data: valores, backgroundColor: ['#63caf2', '#79a2f2', '#200559', '#63caf2', '#f2ad94'] }] },
+                options: { scales: { y: { min: 0, max: 10, stepSize: 1, beginAtZero: true  } }, plugins: { legend: { display: false } } }
             });
         })
         .catch(e => console.error("Erro ao carregar gráfico de barras:", e));
 }
 
+function carregarAulas() {
+    fetch(`/medidas/aulas-por-nivel/${idAluno}`)
+        .then(res => res.json())
+        .then(aulas => {
+            const lista = document.getElementById('listaAulas');
+            lista.innerHTML = '';
+            if (aulas.length === 0) {
+                lista.textContent = "Nenhuma aula encontrada para o seu nível.";
+                return;
+            }
+            aulas.forEach(aula => {
+                const item = document.createElement('p');
+                item.textContent = `${aula.diaSemana} ${aula.horario} - ${aula.estilo} na escola ${aula.escola} (${aula.rua}, ${aula.numero}, ${aula.bairro}, ${aula.cep})`;
+                lista.appendChild(item);
+            });
+        })
+        .catch(e => {
+            console.error("Erro ao carregar aulas:", e);
+            document.getElementById('listaAulas').textContent = "Erro ao carregar aulas.";
+        });
+}
+
+carregarAulas();
 carregarKPIs();
 carregarPizza();
 carregarBarras();
 </script>
-
 
 </body>
 </html>
