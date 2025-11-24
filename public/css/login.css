@@ -1,181 +1,155 @@
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background-color: #ffffff;
-}
-
-/* ----------------------- HEADER ----------------------- */
-
-header {
-    background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px 20px;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  font-size: 160%;
 }
 
-.logo img {
-    height: 120px;
-}
+
 
 .botoes {
-    display: flex;
-    gap: 40px;
+  display: flex;
+  gap: 40px;
+  justify-content: end;
+  flex-direction: row;
+  width: 100%;
 }
 
 .botoes a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 18px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: 0.3s;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding-right: 5%;
 }
 
-.botoes a:hover {
-    background-color: #d92bbc;
-    color: #fff;
-}
 
-/* ----------------------- CONTAINER ----------------------- */
-
-.login {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-}
 
 .container {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    justify-content: center;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+ 
 }
 
 .container img {
-    width: 100%;
-    border-radius: 20px;
+  width: 100%;
 }
-
-/* ----------------------- CARD LOGIN ----------------------- */
 
 .card-cadastro {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 45%;
-    background: #fff;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+  position: absolute; 
+  top: 15%; 
+  background-color: white;
+  padding: 30px;
+  width: 40%;
+  border-radius: 20px;
+  margin-bottom: 80px; 
 
-.formulario p {
-    font-size: 26px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.campo {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.campo span {
-    font-size: 18px;
 }
 
 .card-cadastro input {
-    border-radius: 10px;
-    border: 1px solid #aaa;
-    height: 35px;
-    padding-left: 10px;
-    font-size: 16px;
+  height: 30px;
+  border-radius: 10px;
+  padding-left: 10px;
+  border: 1px solid #79a2f2;
+  gap: 50px;
+
 }
 
-/* ----------------------- BOTÃO ----------------------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .botao {
-    width: 40%;
-    height: 40px;
-    border-radius: 10px;
-    border: none;
-    background-color: #200559;
-    color: white;
-    cursor: pointer;
-    margin: 0 auto;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-.botao:hover {
-    background-color: #d92bbc;
-}
-
-/* ----------------------- ERRO ----------------------- */
-
-.alerta_erro {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.card_erro {
-    display: none;
-    background-color: #ffcece;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ff5c5c;
-}
-
-/* ----------------------- FOOTER ----------------------- */
-
-footer {
-    margin-top: 100px;
+  background-color: #200559;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  width: 90px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px;
-    background-color: #ffffff;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-top: auto; 
 }
 
 .footer .logo img {
-    height: 150px;
+  padding-left: 0;
+  height: 180px;
 }
 
-.home-sobre,
-.cadastro-login,
-.redes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.footer .home-sobre {
+  display: flex;
+  flex-direction: column;
+  line-height: 40px;
+}
+
+.footer .cadastro-login {
+  display: flex;
+  flex-direction: column;
+  line-height: 40px;
+}
+
+.footer .redes {
+  display: flex;
+  flex-direction: column;
+  line-height: 40px;
+  justify-content: center;
+  align-items: center;
+  padding-right: 80px;
 }
 
 .footer a {
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
-    transition: 0.3s;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  padding-right: 3%;
+  font-size: 160%;
 }
 
-.footer a:hover {
-    color: #d92bbc;
+.footer p {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  padding-right: 3%;
+  font-size: 160%;
 }
 
-.redes img {
-    height: 40px;
+.selecao select {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  width: 200px;
+  
+  height: 30px;
+  color: #200559;
+  border-radius: 10px;
+  border-color: #79a2f2;
+  background-color: #79a2f2;
 }

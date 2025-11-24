@@ -22,11 +22,12 @@
                 <a href="./login.html" class="login">Login</a>
             </div>
 
-
+</div>
         </div>
     </header>
 
-
+<div class="container">
+        <img src="../assets/Design sem nome (7).png" alt="fundocadastro">
     <div id="pontuacaoEJogo">
         <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
 
@@ -85,6 +86,29 @@
 
         </div>
     </div>
+    </div>
+    <footer>
+      <div class="footer">
+          <div class="logo">
+              <img src="../assets/Logo.png" alt="Logo">
+            </div>
+<div class="home-sobre">
+                <a href="./home.html" class="home">Home</a>
+                <a href="./sobrenos.html" class="sobrenos">Sobre nós</a>
+            </div>
+            <div class="cadastro-login">
+                <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
+                <a href="./login.html" class="login">Login</a>
+            </div>
+            <div class="redes">
+                <p>Redes Sociais</p>
+                <img src="../assets/redes 1.png" alt="home">
+                
+            </div>
+            
+            
+        </div>
+    </footer>
 </body>
 
 </html>
@@ -192,12 +216,14 @@
 
     ]
 
+    // variáveis globais    
     let numeroDaQuestaoAtual = 0
     let pontuacaoFinal = 0
     let tentativaIncorreta = 0
     let certas = 0
     let erradas = 0
     let quantidadeDeQuestoes = listaDeQuestoes.length
+    // let isUltima = numeroDaQuestaoAtual == quantidadeDeQuestoes-1 ? true : false
 
     function onloadEsconder() {
         document.getElementById('pontuacao').style.display = "none"
@@ -215,7 +241,7 @@
 
         btnSubmeter.disabled = false
         btnProx.disabled = true
-    
+        // btnConcluir.disabled = true
         btnTentarNovamente.disabled = true
     }
 
@@ -310,7 +336,7 @@ function finalizarJogo() {
         nivel = "Avançado";
     }
 
-
+    // Atualizando a pontuação no final
     document.getElementById("spanPontuacaoFinal").innerHTML = pontuacaoFinal;
     document.getElementById("msgFinal").innerHTML = `Seu nível: ${nivel}`;
 
