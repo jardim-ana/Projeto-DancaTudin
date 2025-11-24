@@ -1,220 +1,228 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>DançaTudin - Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="./css/dashboard.css">
 </head>
+
 <body>
 
-<div class="menu">
-    <h1>DançaTudin</h1>
-    <a href="./login.html">Sair</a>
-</div>
-
-<div class="principal">
-
-    <div class="aulas">
-        <h2>Locais que oferecem aulas o seu nível.</h2>
-        <div id="listaAulas"></div>
-    </div>
-
-    <div class="indicadores">
-        <div class="kpi">
-            <h2>Quantidade de pessoas no seu nível</h2>
-            <p id="kpiNivel"></p>
-            <a id="kpiLegendaPessoas">Quantidade de pessoas cadastradas que estão no mesmo nível que você.</a>
-        
+    <div class="menu">
+        <h1>DançaTudin</h1>
+        <div class="hello">
+            <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
         </div>
-        <div class="kpi">
-            <h2>Seu nível</h2>
-            <p id="kpiNivelAtual"></p>
-            <a id="kpiLegendaPessoas">Seu nível atual de acordo com o quiz.</a>
-        </div>
-        <div class="kpi">
-            <h2>Semanas para subir de nível</h2>
-            <p id="kpiSemanas"></p>
-            <a id="kpiLegenda"></a>
+        <div class="sair"></div>
+        <a href="./login.html">Sair</a>
         </div>
     </div>
 
-    <div class="graficos">
-        <div class="grafico1">
-            <h3>Porcentagem de locais no seu nível por região</h3>
-            <canvas id="graficoPizza"></canvas>
+    <div class="principal">
+
+        <div class="aulas">
+            <h2>Locais que oferecem aulas o seu nível.</h2>
+            <div id="listaAulas"></div>
         </div>
-        <div class="grafico2">
-            <h3>Quantidade de pessoas por nível</h3>
-            <canvas id="graficoBarras"></canvas>
+
+        <div class="indicadores">
+            <div class="kpi">
+                <h2>Quantidade de pessoas no seu nível</h2>
+                <p id="kpiNivel"></p>
+                <a id="kpiLegendaPessoas">Quantidade de pessoas cadastradas que estão no mesmo nível que você.</a>
+
+            </div>
+            <div class="kpi">
+                <h2>Seu nível</h2>
+                <p id="kpiNivelAtual"></p>
+                <a id="kpiLegendaPessoas">Seu nível atual de acordo com o quiz.</a>
+            </div>
+            <div class="kpi">
+                <h2>Semanas para subir de nível</h2>
+                <p id="kpiSemanas"></p>
+                <a id="kpiLegenda"></a>
+            </div>
         </div>
+
+        <div class="graficos">
+            <div class="grafico1">
+                <h3>Porcentagem de locais no seu nível por região</h3>
+                <canvas id="graficoPizza"></canvas>
+            </div>
+            <div class="grafico2">
+                <h3>Quantidade de pessoas por nível</h3>
+                <canvas id="graficoBarras"></canvas>
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <script>
+        let idAluno = sessionStorage.ID_USUARIO;
+        if (!idAluno) {
+            alert("Usuário não identificado. Faça login novamente.");
+            window.location = "login.html";
+        }
 
-<script>
-let idAluno = sessionStorage.ID_USUARIO;
-if (!idAluno) {
-    alert("Usuário não identificado. Faça login novamente.");
-    window.location = "login.html";
-}
+        let pizza;
+        let barras;
 
-let pizza;
-let barras;
+        function carregarKPIs() {
+            fetch(`/medidas/kpis/${idAluno}`)
+                .then(r => r.json())
+                .then(dados => {
+                    if (dados.length > 0) {
+                        const kpi = dados[0];
 
-function carregarKPIs() {
-    fetch(`/medidas/kpis/${idAluno}`)
-        .then(r => r.json())
-        .then(dados => {
-            if (dados.length > 0) {
-                const kpi = dados[0];
-                
-                document.getElementById("kpiNivel").innerHTML = `${kpi.pessoasMesmoNivel} pessoas`;
-                document.getElementById("kpiNivelAtual").innerHTML = kpi.nivelAtual;
+                        document.getElementById("kpiNivel").innerHTML = `${kpi.pessoasMesmoNivel} pessoas`;
+                        document.getElementById("kpiNivelAtual").innerHTML = kpi.nivelAtual;
 
-                let semanasParaSubir;
-                let legenda = '';
+                        let semanasParaSubir;
+                        let legenda = '';
 
-                if (kpi.nivelAtual =="Básico") {
-                    semanasParaSubir = 48;
-                    legenda = "1 ano para passar para o nível Intermediário";
-                } else if (kpi.nivelAtual == "Intermediário") {
-                    semanasParaSubir = 96;
-                    legenda = "2 anos para passar para o nível Avançado";
-                } else if (kpi.nivelAtual == "Avançado") {
-                    semanasParaSubir = 144;
-                    legenda = "3 anos para passar a ser Bolsista (auxiliar do professor)";
-                } else {
-                    semanasParaSubir = "-";
-                    legenda = "Sem informações sobre o tempo de evolução para o próximo nível.";
-                }
-
-                document.getElementById("kpiSemanas").innerHTML = `${semanasParaSubir} semanas`;
-                document.getElementById("kpiLegenda").innerHTML = legenda;
-            } else {
-                document.getElementById("kpiNivel").innerHTML = "0 pessoas";
-                document.getElementById("kpiNivelAtual").innerHTML = "-";
-                document.getElementById("kpiSemanas").innerHTML = "-";
-                document.getElementById("kpiLegenda").innerHTML = "-";
-            }
-        })
-        .catch(e => console.error("Erro ao carregar KPIs:", e));
-}
-
-function carregarPizza() {
-    fetch(`/medidas/distribuicao-zonas/${idAluno}`)
-        .then(res => res.json())
-        .then(dados => {
-            if (dados.length === 0) return;
-
-            const zonas = [];
-            const valores = [];
-
-            for (let i = 0; i < dados.length; i++) {
-                zonas.push(dados[i].zona);
-                valores.push(dados[i].percentual);
-            }
-
-            if (pizza) {
-                pizza.data.labels = zonas;
-                pizza.data.datasets[0].data = valores;
-                pizza.update();
-            } else {
-                pizza = new Chart(document.getElementById('graficoPizza'), {
-                    type: 'pie',
-                    data: {
-                        labels: zonas,
-                        datasets: [{
-                            data: valores,
-                            backgroundColor: ['#d92bbc', '#200559', '#79a2f2', '#63caf2', '#f2ad94']
-                        }]
-                    },
-                    options: {
-                        plugins: {
-                            legend: { position: 'bottom' }
+                        if (kpi.nivelAtual == "Básico") {
+                            semanasParaSubir = 48;
+                            legenda = "1 ano para passar para o nível Intermediário";
+                        } else if (kpi.nivelAtual == "Intermediário") {
+                            semanasParaSubir = 96;
+                            legenda = "2 anos para passar para o nível Avançado";
+                        } else if (kpi.nivelAtual == "Avançado") {
+                            semanasParaSubir = 144;
+                            legenda = "3 anos para passar a ser Bolsista (auxiliar do professor)";
+                        } else {
+                            semanasParaSubir = "-";
+                            legenda = "Sem informações sobre o tempo de evolução para o próximo nível.";
                         }
+
+                        document.getElementById("kpiSemanas").innerHTML = `${semanasParaSubir} semanas`;
+                        document.getElementById("kpiLegenda").innerHTML = legenda;
+                    } else {
+                        document.getElementById("kpiNivel").innerHTML = "0 pessoas";
+                        document.getElementById("kpiNivelAtual").innerHTML = "-";
+                        document.getElementById("kpiSemanas").innerHTML = "-";
+                        document.getElementById("kpiLegenda").innerHTML = "-";
                     }
-                });
-            }
-        })
-        .catch(e => console.error("Erro ao carregar gráfico de pizza:", e));
-}
+                })
+                .catch(e => console.error("Erro ao carregar KPIs:", e));
+        }
 
-function carregarBarras() {
-    fetch(`/medidas/distribuicao-niveis`)
-        .then(r => r.json())
-        .then(dados => {
-            if (dados.length === 0) return;
+        function carregarPizza() {
+            fetch(`/medidas/distribuicao-zonas/${idAluno}`)
+                .then(res => res.json())
+                .then(dados => {
+                    if (dados.length === 0) return;
 
-            const niveis = [];
-            const quantidades = [];
+                    const zonas = [];
+                    const valores = [];
 
-            for (let i = 0; i < dados.length; i++) {
-                niveis.push(dados[i].nivel);
-                quantidades.push(dados[i].quantidade);
-            }
+                    for (let i = 0; i < dados.length; i++) {
+                        zonas.push(dados[i].zona);
+                        valores.push(dados[i].percentual);
+                    }
 
-            if (barras) {
-                barras.data.labels = niveis;
-                barras.data.datasets[0].data = quantidades;
-                barras.update();
-            } else {
-                barras = new Chart(document.getElementById('graficoBarras'), {
-                    type: 'bar',
-                    data: {
-                        labels: niveis,
-                        datasets: [{
-                            data: quantidades,
-                            backgroundColor: ['#63caf2', '#79a2f2', '#200559', '#63caf2', '#f2ad94']
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                min: 0,
-                                max: 30,
-                                stepSize: 1,
-                                beginAtZero: true
+                    if (pizza) {
+                        pizza.data.labels = zonas;
+                        pizza.data.datasets[0].data = valores;
+                        pizza.update();
+                    } else {
+                        pizza = new Chart(document.getElementById('graficoPizza'), {
+                            type: 'pie',
+                            data: {
+                                labels: zonas,
+                                datasets: [{
+                                    data: valores,
+                                    backgroundColor: ['#d92bbc', '#200559', '#79a2f2', '#63caf2', '#f2ad94']
+                                }]
+                            },
+                            options: {
+                                plugins: {
+                                    legend: { position: 'bottom' }
+                                }
                             }
-                        },
-                        plugins: {
-                            legend: { display: false }
-                        }
+                        });
                     }
-                });
-            }
-        })
-        .catch(e => console.error("Erro ao carregar gráfico de barras:", e));
-}
+                })
+                .catch(e => console.error("Erro ao carregar gráfico de pizza:", e));
+        }
 
-function carregarAulas() {
-    fetch(`/medidas/aulas-por-nivel/${idAluno}`)
-        .then(res => res.json())
-        .then(aulas => {
-            const lista = document.getElementById('listaAulas');
-            lista.innerHTML = '';  
-            if (aulas.length === 0) {
-                lista.innerHTML = "Nenhuma aula encontrada para o seu nível.";
-                return;
-            }
+        function carregarBarras() {
+            fetch(`/medidas/distribuicao-niveis`)
+                .then(r => r.json())
+                .then(dados => {
+                    if (dados.length === 0) return;
 
-            for (let i = 0; i < aulas.length; i++) {
-                lista.innerHTML += `
+                    const niveis = [];
+                    const quantidades = [];
+
+                    for (let i = 0; i < dados.length; i++) {
+                        niveis.push(dados[i].nivel);
+                        quantidades.push(dados[i].quantidade);
+                    }
+
+                    if (barras) {
+                        barras.data.labels = niveis;
+                        barras.data.datasets[0].data = quantidades;
+                        barras.update();
+                    } else {
+                        barras = new Chart(document.getElementById('graficoBarras'), {
+                            type: 'bar',
+                            data: {
+                                labels: niveis,
+                                datasets: [{
+                                    data: quantidades,
+                                    backgroundColor: ['#63caf2', '#79a2f2', '#200559', '#63caf2', '#f2ad94']
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        min: 0,
+                                        max: 30,
+                                        stepSize: 1,
+                                        beginAtZero: true
+                                    }
+                                },
+                                plugins: {
+                                    legend: { display: false }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(e => console.error("Erro ao carregar gráfico de barras:", e));
+        }
+
+        function carregarAulas() {
+            fetch(`/medidas/aulas-por-nivel/${idAluno}`)
+                .then(res => res.json())
+                .then(aulas => {
+                    const lista = document.getElementById('listaAulas');
+                    lista.innerHTML = '';
+                    if (aulas.length === 0) {
+                        lista.innerHTML = "Nenhuma aula encontrada para o seu nível.";
+                        return;
+                    }
+
+                    for (let i = 0; i < aulas.length; i++) {
+                        lista.innerHTML += `
                     <p>${aulas[i].diaSemana} ${aulas[i].horario} - ${aulas[i].estilo} na escola ${aulas[i].escola} (${aulas[i].rua}, ${aulas[i].numero}, ${aulas[i].bairro}, ${aulas[i].cep})</p>
                 `;
-            }
-        })
-        .catch(e => {
-            console.error("Erro ao carregar aulas:", e);
-            document.getElementById('listaAulas').innerHTML = "Erro ao carregar aulas.";
-        });
-}
+                    }
+                })
+                .catch(e => {
+                    console.error("Erro ao carregar aulas:", e);
+                    document.getElementById('listaAulas').innerHTML = "Erro ao carregar aulas.";
+                });
+        }
 
-carregarAulas();
-carregarKPIs();
-carregarPizza();
-carregarBarras();
-</script>
+        carregarAulas();
+        carregarKPIs();
+        carregarPizza();
+        carregarBarras();
+    </script>
 
 </body>
+
 </html>

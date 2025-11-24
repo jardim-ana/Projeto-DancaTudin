@@ -11,102 +11,103 @@
   <script src="./js/sessao.js"></script>
 
   <link rel="stylesheet" href="../css/cadastro.css" />
- 
+
 </head>
 
 <body onload="listar()">
- <header>
-        <div class="header">
-            <div class="logo">
-                <img src="../assets/Logo.png" alt="Logo">
-            </div>
-            <div class="botoes">
-                <a href="./home.html" class="home">Home</a>
-                <a href="./sobrenos.html" class="sobrenos">Sobre nós</a>
-                <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
-                <a href="./login.html" class="login">Login</a>
-            </div>
+  <header>
+    <div class="header">
+      <div class="logo">
+        <img src="../assets/Logo.png" alt="Logo">
+      </div>
+      <div class="botoes">
+        <a href="./home.html" class="home">Home</a>
+        <a href="./sobrenos.html" class="sobrenos">Desenvolvedora</a>
+        <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
+        <a href="./login.html" class="login">Login</a>
+      </div>
 
 
-        </div>
-    </header>
+    </div>
+  </header>
   <div class="login">
     <div class="alerta_erro">
-        <div class="card_erro" id="cardErro">
-            <span id="mensagem_erro"></span>
-        </div>
+      <div class="card_erro" id="cardErro">
+        <span id="mensagem_erro"></span>
+      </div>
     </div>
     <div class="container">
-        <img src="../assets/Design sem nome (7).png" alt="fundocadastro">
-        <div class="card card-cadastro">
-          
-          <div class="formulario">
-            <p>CADASTRO</p>
-                <div class="campo">
-                    <span>Nome:</span>
+      <img src="../assets/Design sem nome (7).png" alt="fundocadastro">
+      <div class="card card-cadastro">
+
+        <div class="formulario">
+          <p>CADASTRO</p>
+          <div class="campo">
+            <span>Nome:</span>
             <input id="nome_input" type="text" placeholder="Seu nome" />
-        </div>
-        <div class="campo">
+          </div>
+          <div class="campo">
             <span>E-mail:</span>
             <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
-        </div>
-        <div class="campo">
+          </div>
+          <div class="campo">
             <span>Senha:</span>
             <input id="senha_input" type="password" placeholder="******" />
-        </div>
-        <div class="campo">
+          </div>
+          <div class="campo">
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
-        
-        </div>
 
-        <div class="selecao">
-        <select name="estilo" id="estilo">
-          <option value="0">Selecione...</option>
-          <option value="Sertanejo">Sertanejo</option>
-          <option value="Forró">Forró</option>
-        </select>
-        </div>
+          </div>
+          <div class="nivel">Informe o estilo que você tem interesse.</div>
+          <div class="selecao">
+            <select name="estilo" id="estilo">
+              <option value="0">Selecione...</option>
+              <option value="Sertanejo">Sertanejo</option>
+              <option value="Forró">Forró</option>
+            </select>
+          </div>
 
-        <div class="selecao">
-        <select name="nivel" id="nivel">
-          <option value="0">Selecione...</option>
-          <option value="Básico">Básico</option>
-          <option value="Intermediário">Intermediário</option>
-          <option value="Avançado">Avançado</option>
-        </select>
-        </div>
+          <div class="nivel">De acordo com seu perfil informe o seu nível.</div>
+          <div class="selecao">
+            <select name="nivel" id="nivel">
+              <option value="0">Selecione...</option>
+              <option value="Básico">Básico</option>
+              <option value="Intermediário">Intermediário</option>
+              <option value="Avançado">Avançado</option>
+            </select>
+          </div>
 
+        </div>
+        <button class="botao" onclick="cadastrar()">Cadastrar</button>
+      </div>
     </div>
-    <button class="botao" onclick="cadastrar()">Cadastrar</button>
   </div>
-</div>
-</div>
 
-<div id="mensagem_erro"></div>
+  <div id="mensagem_erro"></div>
 
   <footer>
-      <div class="footer">
-          <div class="logo">
-              <img src="../assets/Logo.png" alt="Logo">
-            </div>
-<div class="home-sobre">
-                <a href="./home.html" class="home">Home</a>
-                <a href="./sobrenos.html" class="sobrenos">Sobre nós</a>
-            </div>
-            <div class="cadastro-login">
-                <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
-                <a href="./login.html" class="login">Login</a>
-            </div>
-            <div class="redes">
-                <p>Redes Sociais</p>
-                <img src="../assets/redes 1.png" alt="home">
-                
-            </div>
-            
-            
-        </div>
-    </footer>
+    <div class="footer">
+      <div class="logo">
+        <img src="../assets/Logo.png" alt="Logo">
+      </div>
+      <div class="home-sobre">
+        <a href="./home.html" class="home">Home</a>
+        <a href="./sobrenos.html" class="sobrenos">Desenvolvedora</a>
+      </div>
+      <div class="cadastro-login">
+        <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
+        <a href="./login.html" class="login">Login</a>
+      </div>
+      <div class="redes">
+        <p>Redes Sociais</p>
+        <img src="../assets/redes 1.png" alt="home">
+
+      </div>
+
+
+    </div>
+  </footer>
 
 </body>
 
@@ -134,13 +135,13 @@
       confirmacaoSenhaVar == ""
     ) {
       mensagem_erro.innerHTML =
-        "(Todos os campos devem ser preenchidos)"; 
+        "(Todos os campos devem ser preenchidos)";
 
-        if (estilo == 0 || nivel == 0) {
-      mensagem_erro.innerHTML =
-        "(O nível e o estilo devem devem ser preenchidos)";
-          
-        }
+      if (estilo == 0 || nivel == 0) {
+        mensagem_erro.innerHTML =
+          "(O nível e o estilo devem devem ser preenchidos)";
+
+      }
 
       return false;
     } else {
