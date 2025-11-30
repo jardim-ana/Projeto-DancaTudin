@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
 
-  <script src="./js/sessao.js"></script>
   <link rel="stylesheet" href="./css/login.css" />
+  <script src="./js/sessao.js" defer></script>
 </head>
 <body>
   <header>
@@ -25,8 +25,8 @@
   </header>
 
   <div class="container">
-    <img src="../assets/Design sem nome (7).png" alt="fundocadastro" class="fundo">
-    <div class="card card-cadastro">
+    <img src="../assets/Design sem nome (7).png" alt="fundo" class="fundo">
+    <div class="card card-login">
       <div class="formulario">
         <p>LOGIN</p>
         <div class="campo">
@@ -39,6 +39,13 @@
         </div>
         <button class="botao" onclick="entrar()">Entrar</button>
       </div>
+    </div>
+  </div>
+
+  <div id="popupLoginErro" class="pop">
+    <div class="up">
+      <button id="fecharLoginErro">Fechar</button>
+      <p id="mensagem_login_erro"></p>
     </div>
   </div>
 
@@ -67,66 +74,45 @@
       var emailVar = document.getElementById('email_input').value;
       var senhaVar = document.getElementById('senha_input').value;
 
-      if (emailVar == "" || senhaVar == "") {
-        document.getElementById('cardErro').style.display = "block";
-        document.getElementById('mensagem_erro').innerHTML = "(Mensagem de erro para todos os campos em branco)";
+      if (emailVar === "" || senhaVar === "") {
+        erro("Todos os campos devem ser preenchidos!");
         return false;
-      } else {
-        setInterval(sumirMensagem, 5000);
       }
-
-      console.log("FORM LOGIN: ", emailVar);
-      console.log("FORM SENHA: ", senhaVar);
 
       fetch("/usuarios/autenticar", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          emailServer: emailVar,
-          senhaServer: senhaVar
-        })
-      }).then(function(resposta) {
-        console.log("ESTOU NO THEN DO entrar()!");
-
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+      })
+      .then(resposta => {
         if (resposta.ok) {
-          console.log(resposta);
-
-          resposta.json().then(json => {
-            console.log(json);
-            console.log(JSON.stringify(json));
-            sessionStorage.EMAIL_USUARIO = json.email;
-            sessionStorage.NOME_USUARIO = json.nome;
-            sessionStorage.ID_USUARIO = json.id;
-
-            console.log(sessionStorage.ID_USUARIO);
-
-            console.log("LOGIN OK — REDIRECIONANDO PARA DASHBOARD...");
-
-            setTimeout(function() {
-              window.location = "dashboard.html";
-            }, 1000);
-          });
-
+          return resposta.json();
         } else {
-          console.log("Houve um erro ao tentar realizar o login!");
-
-          resposta.text().then(texto => {
-            console.error(texto);
-          });
+          erro("E-mail ou senha incorretos!");
+          throw new Error("Erro no login");
         }
-
-      }).catch(function(erro) {
-        console.log(erro);
-      });
+      })
+      .then(json => {
+        sessionStorage.EMAIL_USUARIO = json.email;
+        sessionStorage.NOME_USUARIO = json.nome;
+        sessionStorage.ID_USUARIO = json.id;
+        setTimeout(() => { window.location = "quizz.html"; }, 1000);
+      })
+      .catch(erro => console.log(erro));
 
       return false;
     }
 
-    function sumirMensagem() {
-      document.getElementById('cardErro').style.display = "none";
+    function erro(mensagem) {
+      var popup = document.getElementById("popupLoginErro");
+      var msg = document.getElementById("mensagem_login_erro");
+      popup.style.display = "flex";
+      msg.innerHTML = mensagem;
     }
+
+    document.getElementById("fecharLoginErro").onclick = function() {
+      document.getElementById("popupLoginErro").style.display = "none";
+    };
   </script>
 </body>
 </html>
