@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Cadastro</title>
-
   <script src="./js/sessao.js"></script>
-
   <link rel="stylesheet" href="../css/cadastro.css" />
-
 </head>
+<body>
 
-<body onload="listar()">
   <header>
     <div class="header">
       <div class="logo">
@@ -26,20 +21,27 @@
         <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
         <a href="./login.html" class="login">Login</a>
       </div>
-
-
     </div>
   </header>
-  <div class="login">
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
-      </div>
+
+  <div id="popuperro" class="pop">
+    <div class="up">
+      <button id="fecharerro">Fechar</button>
+      <p id="mensagem_erro"></p>
     </div>
+  </div>
+
+  <div id="popupcadastro" class="pop">
+    <div class="up">
+      <button id="cadastrofechar">Fechar</button>
+      <p id="mensagem_cadastro"></p>
+    </div>
+  </div>
+
+  <div class="login">
     <div class="container">
       <img src="../assets/Design sem nome (7).png" alt="fundocadastro">
       <div class="card card-cadastro">
-
         <div class="formulario">
           <p>CADASTRO</p>
           <div class="campo">
@@ -57,7 +59,6 @@
           <div class="campo">
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
-
           </div>
           <div class="nivel">Informe o estilo que você tem interesse.</div>
           <div class="selecao">
@@ -77,14 +78,11 @@
               <option value="Avançado">Avançado</option>
             </select>
           </div>
-
         </div>
         <button class="botao" onclick="cadastrar()">Cadastrar</button>
       </div>
     </div>
   </div>
-
-  <div id="mensagem_erro"></div>
 
   <footer>
     <div class="footer">
@@ -102,95 +100,75 @@
       <div class="redes">
         <p>Redes Sociais</p>
         <img src="../assets/redes 1.png" alt="home">
-
       </div>
-
-
     </div>
   </footer>
 
-</body>
+  <script>
+    function cadastrar() {
+      var nomeVar = nome_input.value;
+      var emailVar = email_input.value;
+      var senhaVar = senha_input.value;
+      var confirmacaoSenhaVar = confirmacao_senha_input.value;
+      var estiloVar = estilo.value;
+      var nivelVar = nivel.value;
 
-</html>
+      var popuperro = document.getElementById("popuperro");
+      var mensagem_erro = document.getElementById("mensagem_erro");
+      var popupcadastro = document.getElementById("popupcadastro");
+      var mensagem_cadastro = document.getElementById("mensagem_cadastro");
 
-<script>
-
-  function cadastrar() {
-    // aguardar();
-
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
-    var nomeVar = nome_input.value;
-    var emailVar = email_input.value;
-    var senhaVar = senha_input.value;
-    var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var estiloVar = estilo.value;
-    var nivelVar = nivel.value;
-
-    // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      emailVar == "" ||
-      senhaVar == "" ||
-      confirmacaoSenhaVar == ""
-    ) {
-      mensagem_erro.innerHTML =
-        "(Todos os campos devem ser preenchidos)";
-
-      if (estilo == 0 || nivel == 0) {
-        mensagem_erro.innerHTML =
-          "(O nível e o estilo devem devem ser preenchidos)";
-
+      if (
+        nomeVar == "" ||
+        emailVar == "" ||
+        senhaVar == "" ||
+        confirmacaoSenhaVar == "" ||
+        estiloVar == "0" ||
+        nivelVar == "0"
+      ) {
+        popuperro.style.display = "flex";
+        mensagem_erro.innerHTML = "Todos os campos devem ser preenchidos!";
+        return false;
       }
 
-      return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
+      if (senhaVar !== confirmacaoSenhaVar) {
+        popuperro.style.display = "flex";
+        mensagem_erro.innerHTML = "A senha e a confirmação devem ser iguais!";
+        return false;
+      }
+
+      if (!emailVar.includes("@")) {
+        popuperro.style.display = "flex";
+        mensagem_erro.innerHTML = "O e-mail deve conter '@'";
+        return false;
+      }
+
+      if (!senhaVar.includes('1') && !senhaVar.includes('2') && !senhaVar.includes('3') 
+          && !senhaVar.includes('4') && !senhaVar.includes('5') && !senhaVar.includes('6') 
+          && !senhaVar.includes('7') && !senhaVar.includes('8') && !senhaVar.includes('9') 
+          && !senhaVar.includes('0')) {
+        popuperro.style.display = "flex";
+        mensagem_erro.innerHTML = "A senha deve conter ao menos 1 número.";
+        return false;
+      }
+
+      popupcadastro.style.display = "flex";
+      mensagem_cadastro.innerHTML = "Cadastro realizado com sucesso!";
+
+      document.getElementById("cadastrofechar").onclick = function () {
+        popupcadastro.style.display = "none";
+        window.location.href = "./login.html";
+      };
+
+
     }
 
+    document.getElementById("fecharerro").onclick = function () {
+      document.getElementById("popuperro").style.display = "none";
+    };
 
-    // Enviando o valor da nova input
-    fetch("/usuarios/cadastrar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nomeVar,
-        emailServer: emailVar,
-        senhaServer: senhaVar,
-        estiloServer: estiloVar,
-        nivelServer: nivelVar
-      }),
-    })
-      .then(function (resposta) {
-        console.log("resposta: ", resposta);
 
-        if (resposta.ok) {
-          cardErro.style.display = "block";
+  </script>
 
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-          setTimeout(() => {
-            window.location = "./quizz.html";
-          }, "2000");
-
-          limparFormulario();
-        } else {
-          throw "Houve um erro ao tentar realizar o cadastro!";
-        }
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-      });
-
-    return false;
-  }
-
-  function sumirMensagem() {
-    cardErro.style.display = "none";
-  }
-</script>
+</body>
+</html>

@@ -1,165 +1,232 @@
 body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
 }
 
 .header {
-  background-color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 0;
-  font-size: 160%;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    font-size: 160%;
 }
 
 .logo img {
-  padding-left: 20px;
-  height: 120px;
+    padding-left: 20px;
+    height: 120px;
 }
 
 .botoes {
-  display: flex;
-  gap: 40px;
-  justify-content: end;
-  flex-direction: row;
-  width: 100%;
+    display: flex;
+    gap: 40px;
+    justify-content: end;
+    flex-direction: row;
+    width: 100%;
 }
 
 .botoes a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  padding-right: 5%;
+    text-decoration: none;
+    color: #200559;
+    font-weight: 500;
+    padding-right: 5%;
 }
 
-
-
 .container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .container img {
-  width: 100%;
-  height: 800px;
-
+    width: 100%;
+    height: 800px;
 }
 
 .card-cadastro {
-  position: absolute;
-  margin-top: 5%;
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  width: 500px;
-  background-color: white;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-
+    position: absolute;
+    margin-top: 5%;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 500px;
+    background-color: white;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .campo {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .card-cadastro input {
-  border-radius: 10px;
-  height: 30px;
-  padding-left: 10px;
-  border: 1px solid #79a2f2;
+    border-radius: 10px;
+    height: 30px;
+    padding-left: 10px;
+    border: 1px solid #79a2f2;
 }
 
 .botao {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 15px;
-  background-color: #200559;
-  color: white;
-  border-radius: 10px;
-  height: 40px;
-  width: 90px;
-  border: none;
-  cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    background-color: #200559;
+    color: white;
+    border-radius: 10px;
+    height: 40px;
+    width: 90px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
 }
 
-
-
 .footer {
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
- 
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
 }
 
 .footer .logo img {
-  padding-left: 0;
-  height: 180px;
+    padding-left: 0;
+    height: 180px;
 }
 
 .footer .home-sobre {
-  display: flex;
-  flex-direction: column;
-  line-height: 40px;
+    display: flex;
+    flex-direction: column;
+    line-height: 40px;
 }
 
 .footer .cadastro-login {
-  display: flex;
-  flex-direction: column;
-  line-height: 40px;
+    display: flex;
+    flex-direction: column;
+    line-height: 40px;
 }
 
 .footer .redes {
-  display: flex;
-  flex-direction: column;
-  line-height: 40px;
-  justify-content: center;
-  align-items: center;
-  padding-right: 80px;
+    display: flex;
+    flex-direction: column;
+    line-height: 40px;
+    justify-content: center;
+    align-items: center;
+    padding-right: 80px;
 }
 
 .footer a {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
-
-  padding-right: 3%;
-  font-size: 160%;
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    padding-right: 3%;
+    font-size: 160%;
 }
 
-
-
 .footer p {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
-  padding-right: 3%;
-  font-size: 160%;
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    padding-right: 3%;
+    font-size: 160%;
 }
 
 .selecao select {
-  display: flex;
-  justify-content: center;
-  font-size: 20px;
-  width: 200px;
-  height: 30px;
-  color: #200559;
-  border-radius: 10px;
-  border-color: #79a2f2;
-  background-color: #79a2f2;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    width: 200px;
+    height: 30px;
+    color: #200559;
+    border-radius: 10px;
+    border-color: #79a2f2;
+    background-color: #79a2f2;
+}
+
+.pop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.up {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    color: white;
+    font-size: 16px;
+     background-color: #63caf2;
+}
+
+#popuperro .up {
+    background-color: #63caf2;
+}
+
+#popupcadastro .up {
+    background-color: #63caf2;
+}
+
+#fecharerro {
+    position: absolute;
+margin-bottom: 80px;
+margin-left: 300px;
+    background-color: white;
+    color: #63caf2;
+    font-weight: bold;
+    border-radius: 10px;
+
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+
+}
+
+#fecharerro:hover {
+    background-color: #d92bbc;
+    color: #200559;
+
+}
+
+#cadastrofechar {
+    position: absolute;
+margin-bottom: 80px;
+margin-left: 300px;
+    background-color: white;
+    color: #63caf2;
+    font-weight: bold;
+    border-radius: 10px;
+
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+ 
+}
+
+#cadastrofechar:hover {
+    background-color: #d92bbc;
+    color: #200559;
+
 }
