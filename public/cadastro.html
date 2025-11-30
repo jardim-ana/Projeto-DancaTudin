@@ -105,67 +105,80 @@
   </footer>
 
   <script>
-    function cadastrar() {
-      var nomeVar = nome_input.value;
-      var emailVar = email_input.value;
-      var senhaVar = senha_input.value;
-      var confirmacaoSenhaVar = confirmacao_senha_input.value;
-      var estiloVar = estilo.value;
-      var nivelVar = nivel.value;
+   function cadastrar() {
+    var nomeVar = nome_input.value;
+    var emailVar = email_input.value;
+    var senhaVar = senha_input.value;
+    var confirmacaoSenhaVar = confirmacao_senha_input.value;
+    var estiloVar = estilo.value;
+    var nivelVar = nivel.value;
 
-      var popuperro = document.getElementById("popuperro");
-      var mensagem_erro = document.getElementById("mensagem_erro");
-      var popupcadastro = document.getElementById("popupcadastro");
-      var mensagem_cadastro = document.getElementById("mensagem_cadastro");
+    var popuperro = document.getElementById("popuperro");
+    var mensagem_erro = document.getElementById("mensagem_erro");
+    var popupcadastro = document.getElementById("popupcadastro");
+    var mensagem_cadastro = document.getElementById("mensagem_cadastro");
 
-      if (
+    if (
         nomeVar == "" ||
         emailVar == "" ||
         senhaVar == "" ||
         confirmacaoSenhaVar == "" ||
         estiloVar == "0" ||
         nivelVar == "0"
-      ) {
+    ) {
         popuperro.style.display = "flex";
         mensagem_erro.innerHTML = "Todos os campos devem ser preenchidos!";
         return false;
-      }
+    }
 
-      if (senhaVar !== confirmacaoSenhaVar) {
+    if (senhaVar !== confirmacaoSenhaVar) {
         popuperro.style.display = "flex";
         mensagem_erro.innerHTML = "A senha e a confirmação devem ser iguais!";
         return false;
-      }
+    }
 
-      if (!emailVar.includes("@")) {
+    if (!emailVar.includes("@")) {
         popuperro.style.display = "flex";
         mensagem_erro.innerHTML = "O e-mail deve conter '@'";
         return false;
-      }
+    }
 
-      if (!senhaVar.includes('1') && !senhaVar.includes('2') && !senhaVar.includes('3') 
-          && !senhaVar.includes('4') && !senhaVar.includes('5') && !senhaVar.includes('6') 
-          && !senhaVar.includes('7') && !senhaVar.includes('8') && !senhaVar.includes('9') 
-          && !senhaVar.includes('0')) {
+    if (
+        !senhaVar.includes('1') && !senhaVar.includes('2') && !senhaVar.includes('3') &&
+        !senhaVar.includes('4') && !senhaVar.includes('5') && !senhaVar.includes('6') &&
+        !senhaVar.includes('7') && !senhaVar.includes('8') && !senhaVar.includes('9') &&
+        !senhaVar.includes('0')
+    ) {
         popuperro.style.display = "flex";
         mensagem_erro.innerHTML = "A senha deve conter ao menos 1 número.";
         return false;
-      }
-
-      popupcadastro.style.display = "flex";
-      mensagem_cadastro.innerHTML = "Cadastro realizado com sucesso!";
-
-      document.getElementById("cadastrofechar").onclick = function () {
-        popupcadastro.style.display = "none";
-        window.location.href = "./login.html";
-      };
-
-
     }
 
-    document.getElementById("fecharerro").onclick = function () {
-      document.getElementById("popuperro").style.display = "none";
-    };
+    // ===== Aqui entra o fetch =====
+    fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            nomeServer: nomeVar,
+            emailServer: emailVar,
+            senhaServer: senhaVar,
+            estiloServer: estiloVar,
+            nivelServer: nivelVar
+        })
+    })
+    .then(res => {
+        // Mantendo o mesmo comportamento que você tinha antes:
+        popupcadastro.style.display = "flex";
+        mensagem_cadastro.innerHTML = "Cadastro realizado com sucesso!";
+        document.getElementById("cadastrofechar").onclick = function () {
+            popupcadastro.style.display = "none";
+            window.location.href = "./login.html";
+        };
+    })
+    .catch(err => console.log(err));
+
+    return false;
+}
 
 
   </script>

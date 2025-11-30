@@ -27,4 +27,8 @@ router.get("/aulas-por-nivel/:idAluno", function(req, res) {
     medidaController.listarAulasPorNivel(req, res);
 });
 
+router.get("/aluno/:idAluno/atualizar-nivel", function(req, res) {
+    medidaController.atualizarNivelAluno(req, res);
+});
+
 module.exports = router;

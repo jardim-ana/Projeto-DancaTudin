@@ -1,3 +1,4 @@
+var usuarioModel = require("../models/usuarioModel");
 var medidaModel = require("../models/medidaModel");
 
 function listarAulasPorAluno(req, res) {
@@ -12,6 +13,16 @@ function listarAulasPorEscola(req, res) {
     medidaModel.listarAulasPorEscola(idEscola)
         .then(dados => res.json(dados))
         .catch(erro => res.status(500).json(erro));
+}
+
+function listarAulasPorNivel(req, res) {
+    const idAluno = req.params.idAluno;
+    if (!idAluno) {
+        return res.status(400).json({ erro: "ID do aluno não informado" });
+    }
+    medidaModel.listarAulasPorNivel(idAluno)
+        .then(dados => res.json(dados || []))
+        .catch(erro => res.status(500).json({ erro: "Erro ao listar aulas por nível" }));
 }
 
 function buscarKPIs(req, res) {
@@ -32,29 +43,26 @@ function distribuicaoNiveis(req, res) {
     medidaModel.distribuicaoNiveis()
         .then(dados => res.json(dados))
         .catch(erro => res.status(500).json(erro));
-
-
-
-
 }
 
-function listarAulasPorNivel(req, res) {
-    const idAluno = req.params.idAluno;
 
-    if (!idAluno) {
-        return res.status(400).json({ erro: "ID do aluno não informado" });
+function atualizarNivelAluno(req, res) {
+    const idAluno = req.params.idAluno;
+    const nivel = req.query.nivel;  // agora vem da URL
+
+    if (!idAluno || !nivel) {
+        return res.status(400).json({ erro: "ID do aluno ou nível não informado" });
     }
 
-    medidaModel.listarAulasPorNivel(idAluno)
-        .then(dados => {
-            res.json(dados || []); // sempre retorna um array
+    usuarioModel.atualizarNivel(idAluno, nivel)
+        .then(resultado => {
+            res.json({ mensagem: `Nível atualizado para ${nivel}` });
         })
         .catch(erro => {
-            console.error("Erro ao listar aulas por nível:", erro);
-            res.status(500).json({ erro: "Erro ao listar aulas por nível" });
+            console.error("Erro ao atualizar nível:", erro);
+            res.status(500).json({ erro: "Erro ao atualizar nível" });
         });
 }
-
 
 module.exports = {
     listarAulasPorAluno,
@@ -62,5 +70,6 @@ module.exports = {
     listarAulasPorNivel,
     buscarKPIs,
     distribuicaoZonas,
-    distribuicaoNiveis
+    distribuicaoNiveis,
+    atualizarNivelAluno
 };

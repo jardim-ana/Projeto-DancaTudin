@@ -5,9 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
-
   <link rel="stylesheet" href="./css/login.css" />
-  <script src="./js/sessao.js" defer></script>
 </head>
 <body>
   <header>
@@ -74,8 +72,8 @@
       var emailVar = document.getElementById('email_input').value;
       var senhaVar = document.getElementById('senha_input').value;
 
-      if (emailVar === "" || senhaVar === "") {
-        erro("Todos os campos devem ser preenchidos!");
+      if (!emailVar || !senhaVar) {
+        mostrarErro("Todos os campos devem ser preenchidos!");
         return false;
       }
 
@@ -84,11 +82,10 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
       })
-      .then(resposta => {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          erro("E-mail ou senha incorretos!");
+      .then(res => {
+        if (res.ok) return res.json();
+        else {
+          mostrarErro("E-mail ou senha incorretos!");
           throw new Error("Erro no login");
         }
       })
@@ -96,14 +93,18 @@
         sessionStorage.EMAIL_USUARIO = json.email;
         sessionStorage.NOME_USUARIO = json.nome;
         sessionStorage.ID_USUARIO = json.id;
-        setTimeout(() => { window.location = "quizz.html"; }, 1000);
+        if (json.quiz === 'sim') {
+          window.location = "dashboard.html"; 
+        } else {
+          window.location = "quizz.html"; 
+        }
       })
-      .catch(erro => console.log(erro));
+      .catch(err => console.log(err));
 
       return false;
     }
 
-    function erro(mensagem) {
+    function mostrarErro(mensagem) {
       var popup = document.getElementById("popupLoginErro");
       var msg = document.getElementById("mensagem_login_erro");
       popup.style.display = "flex";

@@ -114,7 +114,6 @@
 </html>
 <script>
     const listaDeQuestoes = [
-
         {
             pergunta: "O que é a 'base' no forró ou sertanejo?",
             alternativaA: "O passo mais simples e fundamental da dança",
@@ -123,7 +122,6 @@
             alternativaD: "Um passo usado apenas em apresentações",
             alternativaCorreta: "alternativaA"
         },
-
         {
             pergunta: "Onde a dama posiciona a mão no cavaleiro durante a dança?",
             alternativaA: "No antebraço",
@@ -132,7 +130,6 @@
             alternativaD: "No pescoço",
             alternativaCorreta: "alternativaC"
         },
-
         {
             pergunta: "Qual deve ser a postura ideal durante a dança a dois?",
             alternativaA: "Corpo rígido e braços duros",
@@ -141,7 +138,6 @@
             alternativaD: "Braços soltos sem conexão",
             alternativaCorreta: "alternativaB"
         },
-
         {
             pergunta: "O que significa 'conduzir' na dança?",
             alternativaA: "Puxar ou empurrar o par com força",
@@ -150,7 +146,6 @@
             alternativaD: "Mudar o ritmo sem avisar",
             alternativaCorreta: "alternativaB"
         },
-
         {
             pergunta: "No sertanejo universitário, o que caracteriza os giros?",
             alternativaA: "Movimentos bruscos e rápidos",
@@ -159,7 +154,6 @@
             alternativaD: "Giros obrigatoriamente acrobáticos",
             alternativaCorreta: "alternativaB"
         },
-
         {
             pergunta: "Qual é a função da mão direita do cavaleiro na dama?",
             alternativaA: "Fazer força para movê-la",
@@ -168,7 +162,6 @@
             alternativaD: "Segurar firme para evitar giros",
             alternativaCorreta: "alternativaC"
         },
-
         {
             pergunta: "O que caracteriza o 'passo básico' do forró?",
             alternativaA: "Três passos marcados no tempo da música",
@@ -177,7 +170,6 @@
             alternativaD: "Giros consecutivos",
             alternativaCorreta: "alternativaA"
         },
-
         {
             pergunta: "Como deve ser a pegada do casal durante a dança?",
             alternativaA: "Apertada para não perder o controle",
@@ -186,7 +178,6 @@
             alternativaD: "Rígida",
             alternativaCorreta: "alternativaC"
         },
-
         {
             pergunta: "Quando o cavaleiro quer iniciar um giro na dama, como ele sinaliza?",
             alternativaA: "Puxando o braço dela rapidamente",
@@ -195,7 +186,6 @@
             alternativaD: "Falando verbalmente o movimento",
             alternativaCorreta: "alternativaC"
         },
-
         {
             pergunta: "Em uma boa conexão de dança, o que é fundamental?",
             alternativaA: "Força física para liderar",
@@ -204,7 +194,6 @@
             alternativaD: "Velocidade máxima",
             alternativaCorreta: "alternativaC"
         },
-
         {
             pergunta: "Qual é o papel da dama na condução?",
             alternativaA: "Antecipar os passos sem esperar o líder",
@@ -213,137 +202,121 @@
             alternativaD: "Escolher os passos",
             alternativaCorreta: "alternativaB"
         }
+    ];
 
-    ]
-
-    // variáveis globais    
-    let numeroDaQuestaoAtual = 0
-    let pontuacaoFinal = 0
-    let tentativaIncorreta = 0
-    let certas = 0
-    let erradas = 0
-    let quantidadeDeQuestoes = listaDeQuestoes.length
-    // let isUltima = numeroDaQuestaoAtual == quantidadeDeQuestoes-1 ? true : false
+    let numeroDaQuestaoAtual = 0;
+    let pontuacaoFinal = 0;
+    let certas = 0;
+    let erradas = 0;
+    const quantidadeDeQuestoes = listaDeQuestoes.length;
 
     function onloadEsconder() {
-        document.getElementById('pontuacao').style.display = "none"
-        document.getElementById('jogo').style.display = "none"
+        document.getElementById('pontuacao').style.display = "none";
+        document.getElementById('jogo').style.display = "none";
     }
 
     function iniciarQuiz() {
-        document.getElementById('pontuacao').style.display = "flex"
-        document.getElementById('jogo').style.display = "flex"
-        document.getElementById('btnIniciarQuiz').style.display = "none"
+        document.getElementById('pontuacao').style.display = "flex";
+        document.getElementById('jogo').style.display = "flex";
+        document.getElementById('btnIniciarQuiz').style.display = "none";
 
-        document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes
+        document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes;
+        preencherHTMLcomQuestaoAtual(0);
 
-        preencherHTMLcomQuestaoAtual(0)
-
-        btnSubmeter.disabled = false
-        btnProx.disabled = true
-        // btnConcluir.disabled = true
-        btnTentarNovamente.disabled = true
+        btnSubmeter.disabled = false;
+        btnTentarNovamente.disabled = true;
     }
 
     function preencherHTMLcomQuestaoAtual(index) {
-        habilitarAlternativas(true)
-        const questaoAtual = listaDeQuestoes[index]
-        numeroDaQuestaoAtual = index
-        console.log("questaoAtual")
-        console.log(questaoAtual)
-        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = Number(index) + 1 // ajustando porque o index começa em 0
+        habilitarAlternativas(true);
+        const questaoAtual = listaDeQuestoes[index];
+        numeroDaQuestaoAtual = index;
+
+        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = index + 1;
         document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
         document.getElementById("labelOpcaoUm").innerHTML = questaoAtual.alternativaA;
         document.getElementById("labelOpcaoDois").innerHTML = questaoAtual.alternativaB;
         document.getElementById("labelOpcaoTres").innerHTML = questaoAtual.alternativaC;
         document.getElementById("labelOpcaoQuatro").innerHTML = questaoAtual.alternativaD;
-
-
-
     }
 
     function submeter() {
-    const options = document.getElementsByName("option");
+        const options = document.getElementsByName("option");
+        let selecionada = null;
+        for (let option of options) {
+            if (option.checked) {
+                selecionada = option.value;
+                break;
+            }
+        }
 
-  
-    let selecionada = null;
-    for (let option of options) {
-        if (option.checked) {
-            selecionada = option.value; 
-            break;
+        if (!selecionada) {
+            alert("Não há alternativas escolhidas. Escolha uma opção.");
+            return;
+        }
+
+        const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual];
+
+        if (selecionada === questaoAtual.alternativaCorreta) {
+            pontuacaoFinal++;
+            certas++;
+            document.getElementById("spanCertas").innerHTML = certas;
+        } else {
+            erradas++;
+            document.getElementById("spanErradas").innerHTML = erradas;
+        }
+
+        numeroDaQuestaoAtual++;
+
+        if (numeroDaQuestaoAtual < quantidadeDeQuestoes) {
+            desmarcarRadioButtons();
+            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual);
+        } else {
+            finalizarJogo();
         }
     }
 
-    if (!selecionada) {
-        alert("Não há alternativas escolhidas. Escolha uma opção.");
-        return; 
+    function habilitarAlternativas(ativo) {
+        primeiraOpcao.disabled = !ativo;
+        segundaOpcao.disabled = !ativo;
+        terceiraOpcao.disabled = !ativo;
+        quartaOpcao.disabled = !ativo;
     }
-
-
-    const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual];
-
-
-    if (selecionada === questaoAtual.alternativaCorreta) {
-        pontuacaoFinal++;
-        certas++;
-        document.getElementById("spanCertas").innerHTML = certas;
-    } else {
-        erradas++;
-        document.getElementById("spanErradas").innerHTML = erradas;
-    }
-
-  
-    numeroDaQuestaoAtual++;
-
-    if (numeroDaQuestaoAtual < quantidadeDeQuestoes) {
-        desmarcarRadioButtons();
-        preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual);
-    } else {
-        finalizarJogo();
-    }
-}
-
-        
-    
-
-    function habilitarAlternativas(trueOrFalse) {
-        let opcaoEscolhida = trueOrFalse ? false : true
-
-        primeiraOpcao.disabled = opcaoEscolhida
-        segundaOpcao.disabled = opcaoEscolhida
-        terceiraOpcao.disabled = opcaoEscolhida
-        quartaOpcao.disabled = opcaoEscolhida
-
-    }
-
 
     function desmarcarRadioButtons() {
         const options = document.getElementsByName("option");
-        for (let i = 0; i < options.length; i++) {
-            options[i].checked = false;
+        for (let option of options) {
+            option.checked = false;
         }
     }
 
-function finalizarJogo() {
-    const porcentagemAcertos = pontuacaoFinal / quantidadeDeQuestoes;
-    let nivel = "";
+    function finalizarJogo() {
+        const porcentagemAcertos = pontuacaoFinal / quantidadeDeQuestoes;
+        let nivel = "";
 
-    if(porcentagemAcertos < 0.4) {
-        nivel = "Básico";
-    } else if(porcentagemAcertos < 0.7) {
-        nivel = "Intermediário";
-    } else {
-        nivel = "Avançado";
+        if (porcentagemAcertos < 0.4) {
+            nivel = "Básico";
+        } else if (porcentagemAcertos < 0.7) {
+            nivel = "Intermediário";
+        } else {
+            nivel = "Avançado";
+        }
+
+        document.getElementById("spanPontuacaoFinal").innerHTML = pontuacaoFinal;
+        document.getElementById("msgFinal").innerHTML = `Seu nível: ${nivel}`;
+
+        const idAluno = sessionStorage.ID_USUARIO;
+
+        fetch(`/aluno/${idAluno}/atualizar-nivel?nivel=${nivel}`, { method: "GET" })
+            .then(res => console.log("Nível atualizado:", res))
+            .catch(err => console.error(err));
+
+        fetch(`/aluno/${idAluno}/marcar-quiz`, { method: "GET" })
+            .then(res => {
+                console.log("Quiz marcado como feito:", res);
+                window.location = "dashboard.html";
+            })
+            .catch(err => console.error(err));
     }
 
-    // Atualizando a pontuação no final
-    document.getElementById("spanPontuacaoFinal").innerHTML = pontuacaoFinal;
-    document.getElementById("msgFinal").innerHTML = `Seu nível: ${nivel}`;
-
-    console.log("Estilo:", estiloEscolhido, "Nível:", nivel);
-}
-
-
-
-    
 </script>
