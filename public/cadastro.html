@@ -154,7 +154,7 @@
         return false;
     }
 
-    // ===== Aqui entra o fetch =====
+
     fetch("/usuarios/cadastrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -167,7 +167,7 @@
         })
     })
     .then(res => {
-        // Mantendo o mesmo comportamento que você tinha antes:
+     
         popupcadastro.style.display = "flex";
         mensagem_cadastro.innerHTML = "Cadastro realizado com sucesso!";
         document.getElementById("cadastrofechar").onclick = function () {
