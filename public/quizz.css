@@ -80,6 +80,18 @@ body {
   margin: 10px 0;
 }
 
+#btnIrParaDash {
+  background-color: #200559;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 25px;
+  font-size: 16px;
+  cursor: pointer;
+
+  margin: 10px 0;
+}
+
 
 
 

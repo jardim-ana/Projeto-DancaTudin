@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exemplo - Quiz</title>
-     <link rel="stylesheet" href="./quizz.css">
+    <link rel="stylesheet" href="./quizz.css">
 </head>
-
 
 <body onload="onloadEsconder()">
     <header>
@@ -21,78 +20,74 @@
                 <a href="./cadastro.html" class="cadastrar">Cadastrar</a>
                 <a href="./login.html" class="login">Login</a>
             </div>
-
-</div>
         </div>
     </header>
 
-<div class="container">
+    <div class="container">
         <img src="../assets/Design sem nome (7).png" alt="fundocadastro">
-    <div id="pontuacaoEJogo">
-        <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
-
-        <div id="pontuacao" class="flex-colunar width-fit-content border-primary">
-            <div id="pontuacaoDuranteJogo" class="flex-colunar padding-8">
-                <span class="width-fit-content">Quantidade de acertos: <span id="spanCertas"></span></span>
-                <span class="width-fit-content">Quantidade de erros: <span id="spanErradas"></span></span>
+        <div id="pontuacaoEJogo">
+            <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
+            <div id="pontuacao" class="flex-colunar width-fit-content border-primary">
+                <div id="pontuacaoDuranteJogo" class="flex-colunar padding-8">
+                    <span class="width-fit-content">Quantidade de acertos: <span id="spanCertas"></span></span>
+                    <span class="width-fit-content">Quantidade de erros: <span id="spanErradas"></span></span>
+                    <span class="width-fit-content">Porcentagem de acertos: <span id="porcentagem"></span></span>
+                </div>
+                <div id="pontuacaoFinalJogo" class="flex-colunar padding-8">
+                    <span id="pontuacaoFinal" class="width-fit-content">Pontuação Final:
+                        <span id="spanPontuacaoFinal">***</span>
+                    </span>
+                    <span id="msgFinal" class="width-fit-content">***</span>
+                    <button id="btnIrParaDash" onclick="irParaDashboard()" style="display:none;">Ir para a Dashboard</button>
+                </div>
             </div>
-            <div id="pontuacaoFinalJogo" class="flex-colunar padding-8">
-                <span id="pontuacaoFinal" class="width-fit-content">Pontuação Final:
-                    <span id="spanPontuacaoFinal">***</span>
-                </span>
-                <span id="msgFinal" class="width-fit-content">***</span>
+
+            <div id="jogo" class="width-fit-content flex-colunar border-secondary">
+                <div id="infoQuestao" class="padding-8">
+                    <span>Questão atual: <span id="spanNumeroDaQuestaoAtual"></span> de <span id="qtdQuestoes"></span>
+                        questões.</span>
+                </div>
+
+                <div id="perguntaDaQuestaoAtual" class="padding-8">
+                    <span id="spanQuestaoExibida" class="text-bold"></span>
+                </div>
+
+                <div id="infoAlternativas" class="padding-8">
+                    <span><em>Escolha uma opção dentre as abaixo:</em></span>
+                </div>
+
+                <div id="opcoes" class="flex-colunar padding-8">
+                    <span>
+                        <input type="radio" id="primeiraOpcao" name="option" class="radio" value="alternativaA" />
+                        <label for="primeiraOpcao" class="option" id="labelOpcaoUm"></label>
+                    </span>
+                    <span>
+                        <input type="radio" id="segundaOpcao" name="option" class="radio" value="alternativaB" />
+                        <label for="segundaOpcao" class="option" id="labelOpcaoDois"></label>
+                    </span>
+                    <span>
+                        <input type="radio" id="terceiraOpcao" name="option" class="radio" value="alternativaC" />
+                        <label for="terceiraOpcao" class="option" id="labelOpcaoTres"></label>
+                    </span>
+                    <span>
+                        <input type="radio" id="quartaOpcao" name="option" class="radio" value="alternativaD" />
+                        <label for="quartaOpcao" class="option" id="labelOpcaoQuatro"></label>
+                    </span>
+                </div>
+
+                <div id="botoes" class="flex-colunar padding-8">
+                    <button onclick="submeter()" id="btnSubmeter">Submeter resposta</button>
+                    <button id="btnIrParaDash" onclick="irParaDashboard()" style="display:none;">Ir para a Dashboard</button>
+                </div>
             </div>
         </div>
-
-        <div id="jogo" class="width-fit-content flex-colunar border-secondary">
-
-            <div id="infoQuestao" class="padding-8">
-                <span>Questão atual: <span id="spanNumeroDaQuestaoAtual"></span> de <span id="qtdQuestoes"></span>
-                    questões.</span>
-            </div>
-
-            <div id="perguntaDaQuestaoAtual" class="padding-8">
-                <span id="spanQuestaoExibida" class="text-bold"></span>
-            </div>
-
-            <div id="infoAlternativas" class="padding-8">
-                <span><em>Escolha uma opção dentre as abaixo:</em></span>
-            </div>
-
-            <div id="opcoes" class="flex-colunar padding-8">
-                <span>
-                    <input type="radio" id="primeiraOpcao" name="option" class="radio" value="alternativaA" />
-                    <label for="primeiraOpcao" class="option" id="labelOpcaoUm"></label>
-                </span>
-                <span>
-                    <input type="radio" id="segundaOpcao" name="option" class="radio" value="alternativaB" />
-                    <label for="segundaOpcao" class="option" id="labelOpcaoDois"></label>
-                </span>
-                <span>
-                    <input type="radio" id="terceiraOpcao" name="option" class="radio" value="alternativaC" />
-                    <label for="terceiraOpcao" class="option" id="labelOpcaoTres"></label>
-                </span>
-                <span>
-                    <input type="radio" id="quartaOpcao" name="option" class="radio" value="alternativaD" />
-                    <label for="quartaOpcao" class="option" id="labelOpcaoQuatro"></label>
-                </span>
-            </div>
-
-            <div id="botoes" class="flex-colunar padding-8">
-                <button onclick="submeter()" id="btnSubmeter">Submeter resposta</button>
-                <!-- <button onclick="finalizar()" id="btnConcluir" disabled>Finalizar Quiz</button> -->
-                <button onclick="tentarNovamente()" id="btnTentarNovamente" disabled>Tentar novamente</button>
-            </div>
-
-        </div>
-    </div>
     </div>
     <footer>
-      <div class="footer">
-          <div class="logo">
-              <img src="../assets/Logo.png" alt="Logo">
+        <div class="footer">
+            <div class="logo">
+                <img src="../assets/Logo.png" alt="Logo">
             </div>
-<div class="home-sobre">
+            <div class="home-sobre">
                 <a href="./home.html" class="home">Home</a>
                 <a href="./sobrenos.html" class="sobrenos">Desenvolvedora</a>
             </div>
@@ -103,15 +98,13 @@
             <div class="redes">
                 <p>Redes Sociais</p>
                 <img src="../assets/redes 1.png" alt="home">
-                
             </div>
-            
-            
         </div>
     </footer>
 </body>
 
 </html>
+
 <script>
     const listaDeQuestoes = [
         {
@@ -292,6 +285,7 @@
 
     function finalizarJogo() {
         const porcentagemAcertos = pontuacaoFinal / quantidadeDeQuestoes;
+        var porcentagem = (pontuacaoFinal / quantidadeDeQuestoes) * 100;
         let nivel = "";
 
         if (porcentagemAcertos < 0.4) {
@@ -304,19 +298,26 @@
 
         document.getElementById("spanPontuacaoFinal").innerHTML = pontuacaoFinal;
         document.getElementById("msgFinal").innerHTML = `Seu nível: ${nivel}`;
+        document.getElementById("porcentagem").innerHTML = porcentagem.toFixed(2) + "%";
+
+        document.getElementById("btnIrParaDash").style.display = "block"; 
 
         const idAluno = sessionStorage.ID_USUARIO;
 
-        fetch(`/aluno/${idAluno}/atualizar-nivel?nivel=${nivel}`, { method: "GET" })
-            .then(res => console.log("Nível atualizado:", res))
-            .catch(err => console.error(err));
+       fetch(`/aluno/${idAluno}/atualizar-nivel?nivel=${nivel}&pontuacaoFinal=${pontuacaoFinal}`, { method: "GET" })
+    .then(res => res.json())
+    .then(data => console.log("Nível e pontuação atualizados:", data))
+    .catch(err => console.error("Erro ao atualizar nível e pontuação:", err));
+
 
         fetch(`/aluno/${idAluno}/marcar-quiz`, { method: "GET" })
             .then(res => {
                 console.log("Quiz marcado como feito:", res);
-                window.location = "dashboard.html";
             })
             .catch(err => console.error(err));
     }
 
+    function irParaDashboard() {
+        window.location.href = "./dashboard.html"; 
+    }
 </script>
